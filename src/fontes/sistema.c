@@ -15,6 +15,7 @@ static long long lerCpf() {
 static Paciente lerDadosPaciente() {
     Paciente paciente;
 
+    /* Reune todos os dados digitados antes de enviar para a arvore. */
     paciente.cpf = lerCpf();
 
     printf("Nome completo: ");
@@ -51,6 +52,7 @@ static void cadastrarPaciente(NoArvore **raiz) {
     Paciente paciente = lerDadosPaciente();
     int inseriu = 0;
 
+    /* A raiz pode mudar quando a arvore ainda esta vazia. */
     *raiz = inserirPaciente(*raiz, paciente, &inseriu);
 
     if (inseriu) {
@@ -65,6 +67,7 @@ static void consultarPaciente(NoArvore *raiz) {
     int comparacoes = 0;
     NoArvore *encontrado = buscarPaciente(raiz, cpf, &comparacoes);
 
+    /* Alem dos dados, mostra quantas comparacoes a ABB precisou fazer. */
     if (encontrado != NULL) {
         printf("\nPaciente encontrado.\n");
         exibirPaciente(encontrado->paciente);
@@ -107,6 +110,7 @@ void executarSistema() {
     NoArvore *raiz = NULL;
     int opcao;
 
+    /* Mantem o programa aberto ate o usuario escolher a opcao de encerrar. */
     do {
         exibirMenu();
         scanf("%d", &opcao);
@@ -133,12 +137,15 @@ void executarSistema() {
 /*
 Comentario final:
 A busca na ABB tende a ser mais rapida que na lista original da clinica porque
-ela nao precisa olhar todos os pacientes um por um em cada comparacao, o
-sistema decide se deve continuar procurando pelo lado esquerdo ou pelo lado
-direito da arvore, ignorando uma parte dos cadastros.
+ela nao precisa olhar todos os pacientes um por um. Em cada comparacao, o
+sistema decide se deve continuar pelo lado esquerdo ou pelo lado direito da
+arvore. Com isso, uma parte dos cadastros ja deixa de ser verificada.
 
 Essa vantagem pode ser perdida se os CPFs forem cadastrados em ordem crescente
-ou em ordem decrescente nesse caso, a arvore fica parecida com uma lista,
-com os pacientes praticamente enfileirados um depois do outro.
+ou em ordem decrescente. Nesse caso, a arvore fica parecida com uma lista, com
+os pacientes praticamente enfileirados um depois do outro.
 
+Uma estrutura que resolveria esse problema seria uma arvore balanceada, como a
+AVL ou a Rubro-Negra, pois ela reorganiza os dados para evitar que a arvore
+fique muito torta para apenas um lado.
 */
